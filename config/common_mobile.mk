@@ -18,6 +18,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.software.credentials.prebuilt.xml
 
+# FaceEnroll - Settings RRO
+ PRODUCT_PACKAGES += \
+     FaceEnrollSettingsOverlay
+
 # Media
 PRODUCT_PRODUCT_PROPERTIES += \
     media.recorder.show_manufacturer_and_model=true
