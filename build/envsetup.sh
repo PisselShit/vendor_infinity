@@ -935,7 +935,8 @@ function build_kernel() {
         echo "Skipping kernel build"
         return
     fi
-    local lineage_version="lineage-$(_get_build_var_cached PRODUCT_VERSION_MAJOR).$(_get_build_var_cached PRODUCT_VERSION_MINOR)"
+
+    local lineage_version="17"
 
     local target_kernel_device="$(_get_build_var_cached TARGET_KERNEL_DEVICE)"
     local target_kernel_dir="${ANDROID_BUILD_TOP}/$(_get_build_var_cached TARGET_KERNEL_DIR)"
@@ -984,7 +985,7 @@ function build_kernel() {
             repo_init_args+=("--repo-rev" "${REPO_VERSION}")
         fi
 
-        yes | repo init -u https://github.com/LineageOS/${target_kernel_manifest}.git ${repo_init_args[@]} || [ $? -eq 141 ]
+        yes | repo init -u https://github.com/Pyrtle93/${target_kernel_manifest}.git ${repo_init_args[@]} || [ $? -eq 141 ]
         if [ $? -ne 0 ]; then
             echo "Kernel source repo init failed"
             popd > /dev/null
@@ -997,7 +998,7 @@ function build_kernel() {
         fi
     fi
     if [ -d "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist" ]; then
-        rm -rf "${KERNEL_BUILD_TOP}/out/${target_kernel_device}/dist"
+        rm -rf "${KERNEL_BUILD_TOP}/out"
     fi
     if ! ./build_"${target_kernel_device}".sh; then
         popd > /dev/null
@@ -1035,3 +1036,7 @@ function generate_host_overrides() {
 generate_host_overrides
 
 export USE_THINLTO_CACHE=true
+
+function bk() {
+    SKIP_KERNEL_SYNC=1 build_kernel
+}
